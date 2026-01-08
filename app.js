@@ -1,7 +1,7 @@
 /* ======================================
 GOOGLE SHEET CONFIG
 ====================================== */
-const API_URL = "https://script.google.com/macros/s/AKfycby11HwO1z0yB1i2WuZHlUZNe81XVh_TndOahSfGRrJKd08H518up0_qQ3D7ENd325Gs/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbyR2zXlbfzSewxB-xHLHESkUUHFyph_3SgnxMSnNZrxhflPSzUjv-0KhEVjmN1Pq423mg/exec";
 
 /* ======================================
 GLOBAL STATE
@@ -516,4 +516,5 @@ function enableForm(enable){
   accNo.disabled = accountMode!=="add";
 
 }
+
 
