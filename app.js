@@ -1,7 +1,7 @@
 /* ======================================
 GOOGLE SHEET CONFIG
 ====================================== */
-const API_URL = "https://script.google.com/macros/s/AKfycbyR2zXlbfzSewxB-xHLHESkUUHFyph_3SgnxMSnNZrxhflPSzUjv-0KhEVjmN1Pq423mg/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbx1NXSYyRWFM0n061Q-Mk4PUT20cLp0diOjwVYZcYk3FkcLbtxckddUmXQNpxTb_7NBAg/exec";
 
 /* ======================================
 GLOBAL STATE
@@ -538,6 +538,7 @@ function renderEmiFromSchedule(){
   emiTableCard.style.display = emiSchedule.length ? "block" : "none";
   updateSummary();
 }
+
 
 
 
