@@ -39,12 +39,23 @@ function calcDelayDays(due, paid){
 API CALL HELPER
 ====================================== */
 async function callAPI(action, payload = {}){
-  const res = await fetch(API_URL,{
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body: JSON.stringify({ action, data: payload })
+
+  const response = await fetch(API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      action: action,
+      data: payload
+    })
   });
-  return await res.json();
+
+  if(!response.ok){
+    throw new Error("API error " + response.status);
+  }
+
+  return await response.json();
 }
 
 /* ======================================
@@ -505,3 +516,4 @@ function enableForm(enable){
   accNo.disabled = accountMode!=="add";
 
 }
+
