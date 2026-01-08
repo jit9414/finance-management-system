@@ -437,15 +437,23 @@ async function loadCustomerList(){
 REFERENCES
 ====================================== */
 function addReference(){
-  if(refCount>=2) return alert("Max 2 reference");
+  if(refCount >= 2){
+    alert("Max 2 reference allowed");
+    return;
+  }
   refCount++;
-  referenceContainer.innerHTML += `
-<div class="ref-box">
-<input placeholder="Name">
-<input placeholder="Father">
-<input placeholder="Mobile">
-<textarea placeholder="Address"></textarea>
-</div>`;
+
+  const box = document.createElement("div");
+  box.className = "ref-box";
+
+  box.innerHTML = `
+    <input placeholder="Name">
+    <input placeholder="Father">
+    <input placeholder="Mobile">
+    <textarea placeholder="Address"></textarea>
+  `;
+
+  referenceContainer.appendChild(box);
 }
 
 function collectReferences(){
@@ -507,7 +515,7 @@ function fillAccountForm(a){
   emiRemark.value=a.emi.summary.remark;
 
   emiSchedule=a.emi.schedule||[];
-  generateEmiTable();
+  renderEmiFromSchedule();
 }
 
 function enableForm(enable){
@@ -516,5 +524,20 @@ function enableForm(enable){
   accNo.disabled = accountMode!=="add";
 
 }
+
+function renderEmiFromSchedule(){
+
+  const tbody = emiTable.querySelector("tbody");
+  tbody.innerHTML = "";
+
+  emiSchedule.forEach((e,i)=>{
+    tbody.innerHTML += buildEmiRow(e,i);
+    updateRowUI(i);
+  });
+
+  emiTableCard.style.display = emiSchedule.length ? "block" : "none";
+  updateSummary();
+}
+
 
 
