@@ -1,7 +1,7 @@
 /* ======================================
 GOOGLE SHEET CONFIG
 ====================================== */
-const API_URL = "https://script.google.com/macros/s/AKfycby2r9RYncWTf8RkAkB-zchC95yIsEjn4UsT_Wnx7pSEux58dQrznCpSN6qBWD47a4J_IQ/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycby11HwO1z0yB1i2WuZHlUZNe81XVh_TndOahSfGRrJKd08H518up0_qQ3D7ENd325Gs/exec";
 
 /* ======================================
 GLOBAL STATE
@@ -503,4 +503,5 @@ function enableForm(enable){
   document.querySelectorAll("#accountPopup input,#accountPopup textarea,#accountPopup select")
     .forEach(e=>e.disabled=!enable);
   accNo.disabled = accountMode!=="add";
+
 }
