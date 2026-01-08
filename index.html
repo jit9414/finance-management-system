@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Finance Management System</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ================= APP HEADER ================= -->
+<header class="app-header">
+  <h1 id="appTitle">Finance Management System</h1>
+  <div class="global-search">
+    <input type="text" placeholder="Global Search (Account / Name / Mobile)">
+  </div>
+</header>
+
+<!-- ================= MAIN DASHBOARD ================= -->
+<main id="mainDashboard" class="main">
+  <div class="grid">
+
+    <!-- DATA INFO (Folder removed for Google Sheet) -->
+    <div class="card folder-card">
+      <div class="folder-top">
+        <span class="folder-hint">Google Sheet Connected</span>
+        <span class="info-icon" onclick="toggleFolderRules()">★</span>
+      </div>
+      <button disabled>📂 Folder Not Required</button>
+      <div class="folder-name">Cloud Database Active</div>
+    </div>
+
+    <!-- SELECT FINANCE -->
+    <div class="card">
+      <h3>🏦 Select Finance</h3>
+      <select id="financeSelect">
+        <option value="">-- Select Finance --</option>
+      </select>
+      <button onclick="selectFinance()">Select Finance</button>
+      <button onclick="openEditFinancePopup()">Edit Finance</button>
+      <button onclick="openViewFinancePopup()">👁 View Finance</button>
+    </div>
+
+    <!-- ADD FINANCE -->
+    <div class="card">
+      <h3>➕ Add New Finance</h3>
+      <input id="fname" placeholder="Finance Name">
+      <input id="fmobile" placeholder="Mobile Number">
+      <input id="faddress" placeholder="Address">
+      <button onclick="addFinance()">Save Finance</button>
+    </div>
+
+  </div>
+</main>
+
+<!-- ================= FINANCE DASHBOARD ================= -->
+<section id="financeDashboard" class="main" style="display:none">
+
+  <button class="simple-btn" onclick="backToMain()">⬅ Go Back</button>
+
+  <div style="margin-top:10px">
+    <button class="simple-btn" onclick="openAddAccount()">➕ Add New Account</button>
+  </div>
+
+  <!-- CUSTOMER LIST -->
+  <div class="grid" style="margin-top:20px">
+    <div class="card">
+      <h4>👥 Accounts (<span id="accountCount">0</span>)</h4>
+
+      <input id="customerSearch"
+             placeholder="Search Account / Name"
+             oninput="filterCustomerList()">
+
+      <ul id="customerList"
+          style="list-style:none;padding:0;margin-top:10px;
+                 max-height:320px;overflow-y:auto;">
+      </ul>
+    </div>
+  </div>
+
+  <!-- ACTION BAR -->
+  <div id="customerActionBar" class="card"
+       style="display:none;margin-top:12px">
+    <h4 id="selectedCustomerName">👤 Customer</h4>
+
+    <div class="action-row">
+      <button onclick="openViewAccount()">👁 View</button>
+      <button onclick="openUpdateAccount()">✏ Update</button>
+      <button class="red" onclick="deleteAccount()">🗑 Delete Account</button>
+    </div>
+  </div>
+
+</section>
+
+<!-- ================= INFO POPUP ================= -->
+<div id="folderRulesPopup" class="overlay">
+  <div class="popup small">
+    <h4>ℹ️ System Info</h4>
+    <ul>
+      <li>Data Google Sheet me secure hai</li>
+      <li>Automatic cloud backup enabled</li>
+      <li>Multi-device access supported</li>
+    </ul>
+    <button onclick="toggleFolderRules()">Close</button>
+  </div>
+</div>
+
+<!-- ================= ACCOUNT POPUP ================= -->
+<div id="accountPopup" class="overlay">
+  <div class="popup large">
+
+    <h3>➕ Account</h3>
+
+    <!-- CUSTOMER -->
+    <h4>🧍 Customer Details</h4>
+    <input type="number" id="accNo" placeholder="Account Number">
+    <input id="cname" placeholder="Customer Name">
+    <input id="cfather" placeholder="Father Name">
+    <input id="cmobile" placeholder="Mobile Number">
+    <input id="caltmobile" placeholder="Alternate Mobile Number">
+    <textarea id="caddress" placeholder="Address"></textarea>
+    <textarea id="cremark" placeholder="Remark"></textarea>
+
+    <!-- VEHICLE -->
+    <h4>🚗 Vehicle Details</h4>
+    <input id="vmodel" placeholder="Model">
+    <input id="vcolor" placeholder="Color">
+    <input id="vframe" placeholder="Frame No">
+    <input id="vengine" placeholder="Engine No">
+    <input id="vreg" placeholder="Registration No">
+    <textarea id="vremark" placeholder="Remark"></textarea>
+
+    <!-- REFERENCES -->
+    <h4>👥 Reference Details</h4>
+    <button type="button" onclick="addReference()">➕ Add Reference</button>
+    <div id="referenceContainer"></div>
+
+    <!-- EMI SETUP -->
+    <h4>📆 EMI Setup</h4>
+    <input type="number" id="emiAmount" placeholder="EMI Amount">
+    <input type="number" id="emiTenure" placeholder="Tenure (Months)">
+    <input type="date" id="emiStartDate">
+    <button type="button" onclick="generateEmiTable()">Generate EMI</button>
+
+    <!-- EMI TABLE -->
+    <div class="card" id="emiTableCard"
+         style="margin-top:15px;display:none">
+      <h4>📊 EMI Schedule</h4>
+      <div class="table-wrapper">
+        <table id="emiTable" border="1" cellpadding="6">
+          <thead>
+            <tr>
+              <th>EMI No</th>
+              <th>Month / Year</th>
+              <th>Due Date</th>
+              <th>Due</th>
+              <th>Received</th>
+              <th>Received Date</th>
+              <th>Receipt</th>
+              <th>Mode</th>
+              <th>Issued By</th>
+              <th>Delay</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- EMI SUMMARY -->
+    <div class="card" id="emiSummary" style="margin-top:15px">
+      <h4>📌 EMI Summary</h4>
+      <p>Total EMI: <span id="totalEmi">0</span></p>
+      <p>Total Received: <span id="totalReceived">0</span></p>
+      <p>Pending: <span id="pendingAmt">0</span></p>
+      <p>Expected Till Today: <span id="expectedTill">0</span></p>
+      <textarea id="emiRemark" placeholder="Remark"></textarea>
+    </div>
+
+    <!-- ACTION -->
+    <div class="action-row">
+      <button onclick="saveAccountUnified()">💾 Save</button>
+      <button id="printBtn" onclick="printAccount()" style="display:none">
+        🖨 Print
+      </button>
+      <button class="gray" onclick="closeAccountPopup()">Cancel</button>
+    </div>
+
+    <!-- PRINT NOTE -->
+    <div class="print-note">
+      <strong>Finance Rules & Conditions:</strong><br>
+      • Any delay in EMI payment may attract late fee or penalty.<br>
+      • EMI bounce charges shall be payable by the customer.<br>
+      • This receipt is for record purposes only.
+    </div>
+
+  </div>
+</div>
+
+<!-- ================= EDIT FINANCE POPUP ================= -->
+<div id="editFinancePopup" class="overlay">
+  <div class="popup small">
+    <h4>✏️ Edit Finance</h4>
+    <input id="ef_name">
+    <input id="ef_mobile">
+    <input id="ef_address">
+    <button onclick="updateFinance()">Update</button>
+    <button class="red" onclick="deleteFinance()">Delete</button>
+    <button class="gray" onclick="closeEditFinancePopup()">Close</button>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
